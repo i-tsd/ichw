@@ -6,7 +6,7 @@ import math
 de = [0,0,0,0,0,0,0]
 bas = 2*math.pi/360
 ax = [40,60,100,120,200,300,0]
-ex = [0,0.2,0.1,0.4,0.6,0.3,0]
+ex = [0,0.2,0.1,0.04,0.6,0.2,0]
 s =[]
 colors = ['blue','lime','red','black','orange','cyan','yellow']
 for i in range(7):
@@ -34,10 +34,13 @@ def draw (n):
     s[n].goto(x,y)
     return(deg)
 
-for n in range(6):
-    de[n] = intl(n)
-
-while True:
+def main():
     for n in range(6):
-        de[n] = draw (n)
+        de[n] = intl(n)
     
+    while True:
+        for n in range(6):
+            de[n] = draw (n)
+    
+if __name__ == '__main__':
+    main()
