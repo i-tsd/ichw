@@ -112,14 +112,15 @@ def recurse(solvex):
             solvedh[1].append([search(solvex[0]), True])
             recurse(solvedh)
 
-        try:
-            basedv = vfil(solvex[0].copy())
-        except:
-            pass
-        else:
-            solvedv = [basedv, solvex[1]]
-            solvedv[1].append([search(solvex[0]), False])
-            recurse(solvedv)
+        if hl != vl: #Exclude the circumstances in which the tile is a square
+            try:
+                basedv = vfil(solvex[0].copy())
+            except:
+                pass
+            else:
+                solvedv = [basedv, solvex[1]]
+                solvedv[1].append([search(solvex[0]), False])
+                recurse(solvedv)
     if solvex[1] != []:
         solvex[1].remove(solvex[1][-1])
 
