@@ -32,7 +32,7 @@ def hfil(base0):
     for i in range(hl):
         for j in range(vl):
             if not baset[i + x, j + y]:
-                 baset[i + x, j + y] = True
+                baset[i + x, j + y] = True
             else:
                 raise(AssertionError)
     return(baset)
@@ -44,7 +44,7 @@ def vfil(base0):
     for i in range(hl):
         for j in range(vl):
             if not baset[j + x, i + y]:
-                 baset[j + x, i + y] = True
+                baset[j + x, i + y] = True
             else:
                 raise(AssertionError)
     return(baset)
@@ -99,6 +99,7 @@ def drawtile(a):
         tsd.goto(x * d, y * d)
     tsd.penup()
 
+
 def recurse(solvex):
     if not search(solvex[0]):
         solves.append(solvex[1].copy())
@@ -112,7 +113,7 @@ def recurse(solvex):
             solvedh[1].append([search(solvex[0]), True])
             recurse(solvedh)
 
-        if hl != vl: #Exclude the circumstances in which the tile is a square
+        if hl != vl:  # Exclude the circumstances in which the tile is a square
             try:
                 basedv = vfil(solvex[0].copy())
             except:
@@ -164,7 +165,7 @@ def main():
                 print(ans)
         else:
             pass
-        maxi = (len(solves)) - 1 
+        maxi = (len(solves)) - 1
         tm = int(
             turtle.numinput(
                 "salty fish", "Input number of 0 - %i:" % maxi,
