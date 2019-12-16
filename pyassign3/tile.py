@@ -9,9 +9,16 @@ import turtle
 
 
 def intl():
-    """This function intilizes the floor(represented by
-    the dictionary "base"), which gives value False to all of
-    the cells(means the cells are not filled by a tile).
+    """In this program, the floor is consisted with 1 x 1 cells.
+    Every cell is represented by an item in a dictionary.
+    The key of the dictionary is a tuple (the position of the
+    cell), while the value is a boolean. Value True represents
+    the cell is occupied by a tile, while False represents the
+    cell is vacent.
+    This function intializes the floor (dictionary) with its
+    horizontal length ('bhl') and vertical length ('bvl') given
+    by global variables, and give value False to all of the cells
+    (items).
     """
     for i in range(bhl):
         for j in range(bvl):
@@ -19,6 +26,15 @@ def intl():
 
 
 def search(dict0):
+    """Return: A tuple (x, y) or boolean value False.
+    This functions finds the first unfilled cell (from the left-
+    bottom) of the floor, and returns its position.
+    If this cell can't be found(which means the floor has been
+    adequately filled by tiles), the function will return with
+    value False.
+    The input shall be a dictionary which describes a floor in
+    the format described above.
+    """
     for i in range(bvl):
         for j in range(bhl):
             if not dict0[j, i]:
@@ -27,6 +43,16 @@ def search(dict0):
 
 
 def hfil(base0):
+    """Return: a new dictionary describing a modified floor.
+    This function receives a floor, finds the first unfilled cell
+    with the function "search", and fills a tile HORIZONTALLY with
+    the cell at the its left-bottom). THe function will return with
+    a NEW dictionary describing the modified floor.
+    The function will raise an exception if the tile can't be filled
+    at the position.
+    The input shall be a dictionary which describes a floor in
+    the format described above.
+    """
     baset = base0.copy()
     x, y = search(baset)
     for i in range(hl):
@@ -39,6 +65,9 @@ def hfil(base0):
 
 
 def vfil(base0):
+    """The function works in the same way as the function "hfil", but
+    fills the tile VERTICALLY.
+    """
     baset = base0.copy()
     x, y = search(baset)
     for i in range(hl):
@@ -51,6 +80,7 @@ def vfil(base0):
 
 
 def visualize(x):
+    # Visualize the given result with the Python module Turtle.
     for x0 in range(bhl):
         for y0 in range(bvl):
             drawchart(x0, y0)
@@ -59,6 +89,7 @@ def visualize(x):
 
 
 def drawchart(x, y):
+    # A part of the visualization function, which draws the background.
     d = 36
     tsd = turtle.Turtle()
     tsd.speed(0)
@@ -77,6 +108,7 @@ def drawchart(x, y):
 
 
 def drawtile(a):
+    # A part of the visualization function, which draws the tiles.
     x, y = a[0]
     d = 36
     dirt = a[1]
@@ -101,20 +133,20 @@ def drawtile(a):
 
 
 def recurse(solvex):
-    if not search(solvex[0]):
+    if not search(solvex[0]):  # Append a result to the list
         solves.append(solvex[1].copy())
     else:
-        try:
+        try:  # Try to fill a tile horizontally
             basedh = hfil(solvex[0].copy())
-        except:
+        except:  # The branch will be stopped if the tile can't be filled
             pass
-        else:
+        else:  # Pass the modified floor and the record on
             solvedh = [basedh, solvex[1]]
             solvedh[1].append([search(solvex[0]), True])
-            recurse(solvedh)
+            recurse(solvedh)  # Continue
 
         if hl != vl:  # Exclude the circumstances in which the tile is a square
-            try:
+            try:  # Try to fill a tile vertically
                 basedv = vfil(solvex[0].copy())
             except:
                 pass
@@ -122,11 +154,16 @@ def recurse(solvex):
                 solvedv = [basedv, solvex[1]]
                 solvedv[1].append([search(solvex[0]), False])
                 recurse(solvedv)
-    if solvex[1] != []:
+    if solvex[1] != []:  # Remove the most recent record when it finishes
         solvex[1].remove(solvex[1][-1])
 
 
-def format(solvesx):
+def formatres(solvesx):
+    """The result is not represented in the form given by the example, but in
+    a form described by the following pattern: Every tile is represented by
+    a tuple, in which the first item is the position of its left-bottom cell,
+    the second value is a boolean(True=horizontal;False = vertical).
+    This function converts the result into the pattern of the example."""
     formlist = []
     for sols in solvesx:
         outp = []
@@ -160,7 +197,7 @@ def main():
         print('You can still view the visualization of any of the solutions.')
         doprint = input('Input Y to print the solutions...')
         if doprint == "Y":
-            answer = format(solves)
+            answer = formatres(solves)
             for ans in answer:
                 print(ans)
         else:
@@ -176,14 +213,14 @@ def main():
         input()
 
 
-vl = int(input('Length of the tile...'))
-hl = int(input('Width of the tile...'))
-bvl = int(input('Length of the floor...'))
-bhl = int(input('Width of the floor...'))
-base = dict()
-intl()
-solves = []
-reco = []
-solve = [base, reco]
+vl = int(input('Length of the tile (a)...'))  # a in the example
+hl = int(input('Width of the tile (b)...'))  # b in the example
+bvl = int(input('Length of the floor (m)...'))  # m in the example
+bhl = int(input('Width of the floor (n)...'))  # n in the example
+base = dict()  # Create the floor
+intl()  # Initialize the floor
+solves = []  # The result-containing list
+reco = []  # The initial value of the record, which is empty
+solve = [base, reco]  # The initial value passed to the recurse function
 if __name__ == '__main__':
     main()
